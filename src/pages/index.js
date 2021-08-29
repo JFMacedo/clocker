@@ -1,4 +1,4 @@
-import { Box, Button, Container, Flex, FormControl } from '@chakra-ui/react'
+import { Box, Button, Container, Flex, FormControl, InputGroup, InputLeftAddon } from '@chakra-ui/react'
 import { FormHelperText, FormLabel, Input, Stack, Text } from '@chakra-ui/react'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
@@ -13,7 +13,9 @@ const validationSchema = yup.object().shape({
 
 export default function Home() {
   const formik = useFormik({
-    onSubmit: () => {},
+    onSubmit: (values, form) => {
+      console.log(values)
+    },
     validationSchema,
     initialValues: {
       email: '',
@@ -32,6 +34,7 @@ export default function Home() {
         <FormControl id='email'isRequired>
           <FormLabel color='gray.400'>E-mail</FormLabel>
           <Input
+            size='lg'
             type='email'
             borderColor='gray.400'
             value={ formik.values.email }
@@ -47,6 +50,7 @@ export default function Home() {
         <FormControl id='password'isRequired>
           <FormLabel color='gray.400'>Senha</FormLabel>
           <Input
+            size='lg'
             type='password'
             borderColor='gray.400'
             value={ formik.values.password }
@@ -59,24 +63,36 @@ export default function Home() {
             </FormHelperText>
           ) }
         </FormControl>
-        <Flex align='center'>
-          <Text mr={ 1 }>cloker.work/</Text>
-          <FormControl id='username' isRequired>
-            <Input
-              type='text'
+        <FormControl id='username' isRequired>
+          <InputGroup size='lg'>
+            <InputLeftAddon
+              color='white'
               borderColor='gray.400'
-              value={ formik.values.username }
-              onChange={ formik.handleChange }
-              onBlur={ formik.handleBlur }
+              background='gray.400'
+              children='http://clocker.work/'
             />
-            { formik.touched.username && (
-              <FormHelperText color='red.400' >
-                { formik.errors.username }
-              </FormHelperText>
-            ) }
-          </FormControl>
-        </Flex>
-        <Button w='100%' colorScheme='blue'>
+              <Input
+                size='lg'
+                type='text'
+                borderColor='gray.400'
+                value={ formik.values.username }
+                onChange={ formik.handleChange }
+                onBlur={ formik.handleBlur }
+              />
+            </InputGroup>
+          { formik.touched.username && (
+            <FormHelperText color='red.400' >
+              { formik.errors.username }
+            </FormHelperText>
+          ) }
+        </FormControl>
+        <Button
+          size='lg'
+          w='100%'
+          colorScheme='blue'
+          isLoading={ formik.isSubmitting }
+          onClick={ formik.handleSubmit }
+        >
           Entrar
         </Button>
       </Stack>
