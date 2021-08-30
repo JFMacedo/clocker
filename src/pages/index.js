@@ -2,7 +2,7 @@ import { Box, Button, Container, FormControl } from '@chakra-ui/react'
 import { FormHelperText, FormLabel, Input, Stack, Text } from '@chakra-ui/react'
 import { useFormik } from 'formik'
 import Link from 'next/link'
-import firebase from '../services/firebase'
+import firebase, { persistenceMode } from '../services/firebase'
 import * as yup from 'yup'
 
 import { Logo } from '../components/Logo'
@@ -15,6 +15,8 @@ const validationSchema = yup.object().shape({
 export default function Home() {
   const formik = useFormik({
     onSubmit: async (values, form) => {
+      firebase.auth().setPersistence(persistenceMode)
+
       try {
         const user = await firebase
           .auth()
