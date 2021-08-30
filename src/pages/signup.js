@@ -1,4 +1,4 @@
-import { Box, Button, Container, FormControl } from '@chakra-ui/react'
+import { Box, Button, Container, FormControl, InputGroup, InputLeftAddon } from '@chakra-ui/react'
 import { FormHelperText, FormLabel, Input, Stack, Text } from '@chakra-ui/react'
 import { useFormik } from 'formik'
 import Link from 'next/link'
@@ -9,7 +9,8 @@ import { Logo } from '../components/Logo'
 
 const validationSchema = yup.object().shape({
   email: yup.string().email('E-mail inválido').required('Preenchimento obrigatório'),
-  password: yup.string().required('Preenchimento obrigatório')
+  password: yup.string().required('Preenchimento obrigatório'),
+  username: yup.string().required('Preenchimento obrigatório')
 })
 
 export default function Home() {
@@ -18,7 +19,7 @@ export default function Home() {
       try {
         const user = await firebase
           .auth()
-          .signInWithEmailAndPassword(values.email, values.password)
+          .createUserWithEmailAndPassword(values.email, values.password)
         console.log(user)
       } catch(error) {
         console.error(error)
@@ -71,6 +72,29 @@ export default function Home() {
             </FormHelperText>
           ) }
         </FormControl>
+        <FormControl id='username' isRequired>
+          <InputGroup size='lg'>
+            <InputLeftAddon
+              color='white'
+              borderColor='gray.400'
+              background='gray.400'
+              children='http://clocker.work/'
+            />
+              <Input
+                size='lg'
+                type='text'
+                borderColor='gray.400'
+                value={ formik.values.username }
+                onChange={ formik.handleChange }
+                onBlur={ formik.handleBlur }
+              />
+            </InputGroup>
+          { formik.touched.username && (
+            <FormHelperText color='red.400' >
+              { formik.errors.username }
+            </FormHelperText>
+          ) }
+        </FormControl>
         <Button
           size='lg'
           w='100%'
@@ -81,7 +105,7 @@ export default function Home() {
           Entrar
         </Button>
         <Box textAlign='center'>
-          <Link href='/signup'>Ainda não tem uma conta? Cadastre-se!</Link>
+          <Link href='/'>Já tem uma conta? Acesse!</Link>
         </Box>
       </Stack>
     </Container>
