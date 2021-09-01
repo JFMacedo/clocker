@@ -2,7 +2,7 @@ import { Box, Button, Container, FormControl, InputGroup, InputLeftAddon } from 
 import { FormHelperText, FormLabel, Input, Stack, Text } from '@chakra-ui/react'
 import { useFormik } from 'formik'
 import Link from 'next/link'
-import firebase from '../services/firebase'
+import firebaseClient from '../services/firebaseClient'
 import * as yup from 'yup'
 
 import { Logo } from '../components/Logo'
@@ -17,7 +17,7 @@ export default function Home() {
   const formik = useFormik({
     onSubmit: async (values, form) => {
       try {
-        const user = await firebase
+        const user = await firebaseClient
           .auth()
           .createUserWithEmailAndPassword(values.email, values.password)
         console.log(user)

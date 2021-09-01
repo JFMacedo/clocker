@@ -1,4 +1,4 @@
-import firebase from '../services/firebase'
+import firebaseClient from '../services/firebaseClient'
 import { useEffect, useState } from 'react'
 
 import { Login } from '../components/Login'
@@ -12,7 +12,7 @@ export default function Home() {
   })
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged(user => {
+    firebaseClient.auth().onAuthStateChanged(user => {
       setAuth({
         loading: false,
         user
