@@ -35,7 +35,7 @@ export function Login() {
   })
 
   return (
-    <Container minW='480px' p={ 4 } centerContent>
+    <Container minW='560px' p={ 4 } centerContent>
       <Logo />
       <Box p={ 4 } mt={ 8 }>
         <Text>Crie sua agenda compartilhada</Text>
