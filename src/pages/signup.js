@@ -1,10 +1,12 @@
 import { Box, Button, Container, FormControl, InputGroup, InputLeftAddon } from '@chakra-ui/react'
 import { FormHelperText, FormLabel, Input, Stack, Text } from '@chakra-ui/react'
 import { useFormik } from 'formik'
+import { useRouter } from 'next/dist/client/router'
 import Link from 'next/link'
-import firebaseClient from '../services/firebaseClient'
+import { useEffect } from 'react'
 import * as yup from 'yup'
 
+import { useAuth } from '../components/Auth'
 import { Logo } from '../components/Logo'
 
 const validationSchema = yup.object().shape({
@@ -14,17 +16,10 @@ const validationSchema = yup.object().shape({
 })
 
 export default function Home() {
+  const [auth, { signup }] = useAuth()
+  const router = useRouter()
   const formik = useFormik({
-    onSubmit: async (values, form) => {
-      try {
-        const user = await firebaseClient
-          .auth()
-          .createUserWithEmailAndPassword(values.email, values.password)
-        console.log(user)
-      } catch(error) {
-        console.error(error)
-      }
-    },
+    onSubmit: signup,
     validationSchema,
     initialValues: {
       email: '',
@@ -32,6 +27,10 @@ export default function Home() {
       username: ''
     }
   })
+
+  useEffect(() => {
+    auth.user && router.push('/schedule')
+  }, [auth.user])
 
   return (
     <Container minW='560px' p={ 4 } centerContent>
