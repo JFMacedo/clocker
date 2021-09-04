@@ -34,7 +34,9 @@ export default function Home() {
 
   return (
     <Container minW='560px' p={ 4 } centerContent>
-      <Logo />
+      <Box w='240'>
+        <Logo />
+      </Box>
       <Box p={ 4 } mt={ 8 }>
         <Text>Crie sua agenda compartilhada</Text>
       </Box>
