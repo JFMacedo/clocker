@@ -10,6 +10,5 @@ export default async (req, res) => {
     userId: user_id,
     username: req.body.username
   })
-  
-  res.status(200).json({ name: 'John Doe' })
+  res.status(200).json({ name: 'Jean Macedo' })
 }
