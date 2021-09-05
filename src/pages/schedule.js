@@ -9,14 +9,18 @@ import { addDays, subDays } from 'date-fns'
 import { useAuth } from '../components/Auth'
 import { Logo } from '../components/Logo'
 import { FormatDate } from '../components/Date'
+import { getToken } from '../services/firebaseClient'
 
+const getSchedule = async (when) => {
+  const token = await getToken()
 
-const getSchedule = (when) => axios({
-  method: 'get',
-  url: '/api/schedule',
-  params: { when },
-  // headers: { Authorization: `Bearer ${ token }` }
-})
+  return axios({
+    method: 'get',
+    url: '/api/schedule',
+    params: { when },
+    headers: { Authorization: `Bearer ${ token }` }
+  })
+}
 
 export default function Schedule() {
   const [auth, { logout }] = useAuth()

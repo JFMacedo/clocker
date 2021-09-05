@@ -1,4 +1,6 @@
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 
-export const FormatDate = (date, pattern) => format(date, pattern, { locale: ptBR })
+export function FormatDate(date, pattern) {
+  return format(date, pattern, { locale: ptBR })
+}
