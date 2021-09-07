@@ -3,25 +3,27 @@ import axios from 'axios'
 import { useState } from 'react'
 import { Button, FormControl, FormLabel, FormHelperText, Input, Stack } from '@chakra-ui/react'
 import { useFormik } from 'formik'
+import { format } from 'date-fns'
 
 import { TimeBlockModal } from './TimeBlockModal'
 
-const setSchedule = async data => axios({
+const setSchedule = async ({ date, ...data }) => axios({
   method: 'post',
   url: '/api/scheduled',
   data: {
     ...data,
+    date: format(date, 'yyyyMMdd'),
     username: window.location.pathname.replace('/', '')
   }
 })
 
-export function TimeBlock({ time }) {
+export function TimeBlock({ time, date }) {
   const [isOpen, setIsOpen] = useState(false)
 
   const formik = useFormik({
     onSubmit: async (values) => {
       try {
-        await setSchedule({ ...values, when: time })
+        await setSchedule({ ...values, time, date })
         toggle()
       } catch (error) {
         console.error(error)
