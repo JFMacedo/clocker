@@ -19,7 +19,14 @@ export function TimeBlock({ time }) {
   const [isOpen, setIsOpen] = useState(false)
 
   const formik = useFormik({
-    onSubmit: (values) => setSchedule({ ...values, when: time }),
+    onSubmit: async (values) => {
+      try {
+        await setSchedule({ ...values, when: time })
+        toggle()
+      } catch (error) {
+        console.error(error)
+      }
+    },
     validationSchema: yup.object().shape({
       name: yup.string().required('Preenchimento obrigatório'),
       phone: yup.string().required('Preenchimento obrigatório')
@@ -41,6 +48,7 @@ export function TimeBlock({ time }) {
         isOpen={ isOpen }
         onClose={ toggle }
         onComplete={ formik.handleSubmit }
+        isSubmitting={ formik.isSubmitting }
       >
         <form>
           <Stack spacing={ 8 } w='100%'>
@@ -53,6 +61,7 @@ export function TimeBlock({ time }) {
                 value={ formik.values.name }
                 onChange={ formik.handleChange }
                 onBlur={ formik.handleBlur }
+                disabled={ formik.isSubmitting }
               />
               { formik.touched.name && (
                 <FormHelperText color='red.400' >
@@ -70,6 +79,7 @@ export function TimeBlock({ time }) {
                 value={ formik.values.phone }
                 onChange={ formik.handleChange }
                 onBlur={ formik.handleBlur }
+                disabled={ formik.isSubmitting }
               />
               { formik.touched.phone && (
                 <FormHelperText color='red.400' >
