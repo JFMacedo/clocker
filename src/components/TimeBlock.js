@@ -1,6 +1,6 @@
 import * as yup from 'yup'
 import { useState } from 'react';
-import { Button, Input, Stack } from '@chakra-ui/react'
+import { Button, FormControl, FormLabel, FormHelperText, Input, Stack } from '@chakra-ui/react'
 import { useFormik } from 'formik'
 
 import { TimeBlockModal } from './TimeBlockModal'
@@ -8,35 +8,65 @@ import { TimeBlockModal } from './TimeBlockModal'
 export function TimeBlock({ time }) {
   const [isOpen, setIsOpen] = useState(false)
 
-  const validationSchema = yup.object().shape({
-    name: yup.string()
-      .required('Preenchimento obrigatório'),
-    email: yup.string()
-      .required('Preenchimento obrigatório')
-      .email('E-mail inválido')
-  })
-
   const formik = useFormik({
     onSubmit: () => {},
-    validationSchema,
+    validationSchema: yup.object().shape({
+      name: yup.string().required('Preenchimento obrigatório'),
+      phone: yup.string().required('Preenchimento obrigatório')
+    }),
     initialValues: {
       name: '',
-      email: ''
+      phone: ''
     }
   })
   
   function toggle() {
     setIsOpen(prevState => !prevState)
-  }
+  } 
 
   return (
-    <Button colorScheme='blue' p='8' fontSize='xl' onClick={ toggle }>
+    <Button colorScheme='blue' py='8' fontSize='xl' onClick={ toggle }>
       { time }
-      <TimeBlockModal isOpen={ isOpen } onClose={ toggle }>
+      <TimeBlockModal
+        isOpen={ isOpen }
+        onClose={ toggle }
+        onComplete={ formik.handleSubmit }
+      >
         <form>
-          <Stack spacing='4'>
-            <Input placeholder='Nome' />
-            <Input placeholder='Email' />
+          <Stack spacing={ 8 } w='100%'>
+            <FormControl id='name' isRequired>
+              <FormLabel color='gray.400'>Nome</FormLabel>
+              <Input
+                size='lg'
+                type='text'
+                borderColor='gray.400'
+                value={ formik.values.name }
+                onChange={ formik.handleChange }
+                onBlur={ formik.handleBlur }
+              />
+              { formik.touched.name && (
+                <FormHelperText color='red.400' >
+                  { formik.errors.name }
+                </FormHelperText>
+              ) }
+            </FormControl>
+            <FormControl id='phone' isRequired>
+              <FormLabel color='gray.400'>Telefone</FormLabel>
+              <Input
+                size='lg'
+                type='number'
+                borderColor='gray.400'
+                placeholder='(99) 9 9999-9999'
+                value={ formik.values.phone }
+                onChange={ formik.handleChange }
+                onBlur={ formik.handleBlur }
+              />
+              { formik.touched.phone && (
+                <FormHelperText color='red.400' >
+                  { formik.errors.phone }
+                </FormHelperText>
+              ) }
+            </FormControl>
           </Stack>
         </form>
       </TimeBlockModal>

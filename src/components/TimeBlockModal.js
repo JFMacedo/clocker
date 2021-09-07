@@ -1,7 +1,7 @@
 import { Button, Modal, ModalBody, ModalContent } from '@chakra-ui/react'
 import { ModalFooter, ModalHeader, ModalOverlay } from '@chakra-ui/react'
 
-export function TimeBlockModal({ isOpen, onClose, children }) {
+export function TimeBlockModal({ isOpen, onClose, onComplete, children }) {
 
   return (
     <Modal isOpen={ isOpen } onClose={ onClose }>
@@ -14,7 +14,7 @@ export function TimeBlockModal({ isOpen, onClose, children }) {
 
         <ModalFooter>
           <Button variant='ghost' mr='3' onClick={ onClose }>Cancelar</Button>
-          <Button colorScheme='blue' onClick={ onClose }>
+          <Button colorScheme='blue' onClick={ onComplete }>
             Reservar horário
           </Button>
         </ModalFooter>
