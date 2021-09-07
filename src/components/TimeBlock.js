@@ -17,7 +17,7 @@ const setSchedule = async ({ date, ...data }) => axios({
   }
 })
 
-export function TimeBlock({ time, date }) {
+export function TimeBlock({ time, date, isBlocked }) {
   const [isOpen, setIsOpen] = useState(false)
 
   const formik = useFormik({
@@ -44,7 +44,7 @@ export function TimeBlock({ time, date }) {
   } 
 
   return (
-    <Button colorScheme='blue' py='8' fontSize='xl' onClick={ toggle }>
+    <Button colorScheme='blue' py='8' fontSize='xl' onClick={ toggle } disabled={ isBlocked }>
       { time }
       <TimeBlockModal
         isOpen={ isOpen }
