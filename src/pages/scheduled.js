@@ -9,6 +9,7 @@ import { addDays, subDays } from 'date-fns'
 import { useAuth } from '../components/Auth'
 import { Logo } from '../components/Logo'
 import { FormatDate } from '../components/Date'
+import { TimeBlock } from '../components/TimeBlock'
 
 const getScheduled = async (when) => {
   return axios({
@@ -24,17 +25,10 @@ export default function Schedule() {
   const [when, setWhen] = useState(() => new Date())
   const [data, { loading, status, error }, fetch] = useFetch(getScheduled, { lazy: true })
 
-  function addDay() {
-    setWhen(prevState => addDays(prevState, 1))
-  }
+  function addDay() { setWhen(prevState => addDays(prevState, 1)) }
+  function removeDay() { setWhen(prevState => subDays(prevState, 1)) }
 
-  function removeDay() {
-    setWhen(prevState => subDays(prevState, 1))
-  }
-
-  useEffect(() => {
-    fetch(when)
-  }, [when])
+  useEffect(() => { fetch(when) }, [when])
 
   return (
     <Container>
@@ -68,15 +62,7 @@ export default function Schedule() {
           />
         ) }
         { data?.map(time => (
-          <Button
-            key={ time }
-            colorScheme='blue'
-            p='8'
-            fontSize='2xl'
-            fontWeight='400'
-          >
-            { time }
-          </Button>
+          <TimeBlock key={ time } time={ time } />
         )) }
       </SimpleGrid>
     </Container>

@@ -10,8 +10,11 @@ import { useAuth } from '../components/Auth'
 import { Logo } from '../components/Logo'
 
 const validationSchema = yup.object().shape({
-  email: yup.string().email('E-mail inválido').required('Preenchimento obrigatório'),
-  password: yup.string().required('Preenchimento obrigatório')
+  email: yup.string()
+    .required('Preenchimento obrigatório')
+    .email('E-mail inválido'),
+  password: yup.string()
+    .required('Preenchimento obrigatório')
 })
 
 export default function Login() {
