@@ -1,15 +1,25 @@
 import * as yup from 'yup'
-import { useState } from 'react';
+import axios from 'axios'
+import { useState } from 'react'
 import { Button, FormControl, FormLabel, FormHelperText, Input, Stack } from '@chakra-ui/react'
 import { useFormik } from 'formik'
 
 import { TimeBlockModal } from './TimeBlockModal'
 
+const setSchedule = async data => axios({
+  method: 'post',
+  url: '/api/scheduled',
+  data: {
+    ...data,
+    username: window.location.pathname.replace('/', '')
+  }
+})
+
 export function TimeBlock({ time }) {
   const [isOpen, setIsOpen] = useState(false)
 
   const formik = useFormik({
-    onSubmit: () => {},
+    onSubmit: (values) => setSchedule({ ...values, when: time }),
     validationSchema: yup.object().shape({
       name: yup.string().required('Preenchimento obrigatório'),
       phone: yup.string().required('Preenchimento obrigatório')

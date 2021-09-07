@@ -11,13 +11,14 @@ import { Logo } from '../components/Logo'
 import { FormatDate } from '../components/Date'
 import { TimeBlock } from '../components/TimeBlock'
 
-const getScheduled = async (when) => {
-  return axios({
-    method: 'get',
-    url: '/api/scheduled',
-    params: { when, username: window.location.pathname }
-  })
-}
+const getScheduled = async (when) => axios({
+  method: 'get',
+  url: '/api/scheduled',
+  params: {
+    when,
+    username: window.location.pathname
+  }
+})
 
 export default function Schedule() {
   const [auth, { logout }] = useAuth()
