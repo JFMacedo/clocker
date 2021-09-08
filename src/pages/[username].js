@@ -11,12 +11,12 @@ import { Logo } from '../components/Logo'
 import { FormatDate } from '../components/Date'
 import { TimeBlock } from '../components/TimeBlock'
 
-const getScheduled = async (when) => axios({
+const getScheduled = async ({ when, username }) => axios({
   method: 'get',
   url: '/api/scheduled',
   params: {
     date: format(when, 'yyyyMMdd'),
-    username: window.location.pathname.replace('/', '')
+    username
   }
 })
 
@@ -29,7 +29,9 @@ export default function Schedule() {
   function addDay() { setWhen(prevState => addDays(prevState, 1)) }
   function removeDay() { setWhen(prevState => subDays(prevState, 1)) }
 
-  useEffect(() => { fetch(when) }, [when])
+  useEffect(() => {
+    fetch({ when, username: router.query.username })
+  },[when, router.query.username])
 
   return (
     <Container>
