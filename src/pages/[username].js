@@ -2,11 +2,10 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
-import { Box, Button, Container, Flex, IconButton, SimpleGrid, Spinner } from '@chakra-ui/react'
+import { Box, Container, Flex, IconButton, SimpleGrid, Spinner } from '@chakra-ui/react'
 import { useFetch } from '@refetty/react'
 import { addDays, format, subDays } from 'date-fns'
 
-import { useAuth } from '../components/Auth'
 import { Logo } from '../components/Logo'
 import { FormatDate } from '../components/Date'
 import { TimeBlock } from '../components/TimeBlock'
@@ -21,10 +20,9 @@ const getScheduled = async ({ when, username }) => axios({
 })
 
 export default function Schedule() {
-  const [auth, { logout }] = useAuth()
   const router = useRouter()
   const [when, setWhen] = useState(() => new Date())
-  const [data, { loading, status, error }, fetch] = useFetch(getScheduled, { lazy: true })
+  const [data, { loading }, fetch] = useFetch(getScheduled, { lazy: true })
 
   function addDay() { setWhen(prevState => addDays(prevState, 1)) }
   function removeDay() { setWhen(prevState => subDays(prevState, 1)) }
@@ -39,7 +37,6 @@ export default function Schedule() {
         <Box w='150px'>
           <Logo />
         </Box>
-        <Button onClick={logout}>Sair</Button>
       </Flex>
       <Flex align='center' justify='space-between' mt='8'>
         <IconButton

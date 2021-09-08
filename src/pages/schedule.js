@@ -2,14 +2,15 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
-import { Box, Button, Container, Flex, IconButton } from '@chakra-ui/react'
+import { Box, Button, Container, Flex, IconButton, Spinner, Stack } from '@chakra-ui/react'
 import { useFetch } from '@refetty/react'
-import { addDays, subDays } from 'date-fns'
+import { addDays, format, subDays } from 'date-fns'
 
 import { useAuth } from '../components/Auth'
 import { Logo } from '../components/Logo'
 import { FormatDate } from '../components/Date'
 import { getToken } from '../services/firebaseClient'
+import { ScheduleBlock } from '../components/Schedule'
 
 const getSchedule = async (when) => {
   const token = await getToken()
@@ -17,7 +18,7 @@ const getSchedule = async (when) => {
   return axios({
     method: 'get',
     url: '/api/schedule',
-    params: { when },
+    params: { date: format(when, 'yyyyMMdd') },
     headers: { Authorization: `Bearer ${ token }` }
   })
 }
@@ -26,7 +27,7 @@ export default function Schedule() {
   const [auth, { logout }] = useAuth()
   const router = useRouter()
   const [when, setWhen] = useState(() => new Date())
-  const [data, { loading, status, error }, fetch] = useFetch(getSchedule, { lazy: true })
+  const [data, { loading }, fetch] = useFetch(getSchedule, { lazy: true })
 
   function addDay() {
     setWhen(prevState => addDays(prevState, 1))
@@ -50,7 +51,7 @@ export default function Schedule() {
         <Box w='150px'>
           <Logo />
         </Box>
-        <Button onClick={logout}>Sair</Button>
+        <Button variant='unstyled' onClick={logout}>Sair</Button>
       </Flex>
       <Flex align='center' justify='space-between' mt='8'>
         <IconButton
@@ -65,6 +66,20 @@ export default function Schedule() {
           onClick={ addDay }
         />
       </Flex>
+      { loading && (
+        <Spinner
+          size='xl'
+          thickness='4'
+          speed='0.65s'
+          emptyColor='gray.200'
+          color='blue.500'
+        />
+      ) }
+      <Stack spacing='4' mt='8'>
+        { data?.map(doc => (
+          <ScheduleBlock key={ doc.time } time={ doc.time } name={ doc.name } phone={ doc.phone } />
+        )) }
+      </Stack>
     </Container>
   )
 }
