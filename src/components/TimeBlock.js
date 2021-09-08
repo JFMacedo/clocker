@@ -18,7 +18,7 @@ const setSchedule = async ({ date, ...data }) => axios({
   }
 })
 
-export function TimeBlock({ time, date, isBlocked }) {
+export function TimeBlock({ time, date, isBlocked, onSuccess }) {
   const [isOpen, setIsOpen] = useState(false)
 
   const formik = useFormik({
@@ -26,6 +26,7 @@ export function TimeBlock({ time, date, isBlocked }) {
       try {
         await setSchedule({ ...values, time, date })
         toggle()
+        onSuccess()
       } catch (error) {
         console.error(error)
       }

@@ -27,8 +27,12 @@ export default function Schedule() {
   function addDay() { setWhen(prevState => addDays(prevState, 1)) }
   function removeDay() { setWhen(prevState => subDays(prevState, 1)) }
 
-  useEffect(() => {
+  function refresh() {
     fetch({ when, username: router.query.username })
+  }
+
+  useEffect(() => {
+    refresh()
   },[when, router.query.username])
 
   return (
@@ -62,7 +66,13 @@ export default function Schedule() {
           />
         ) }
         { data?.map(({ time, isBlocked }) => (
-          <TimeBlock key={ time } time={ time } date={ when } isBlocked={ isBlocked } />
+          <TimeBlock
+            key={ time }
+            time={ time }
+            date={ when }
+            isBlocked={ isBlocked }
+            onSuccess={ refresh }
+          />
         )) }
       </SimpleGrid>
     </Container>

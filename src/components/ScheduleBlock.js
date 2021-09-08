@@ -11,9 +11,9 @@ export function ScheduleBlock({ time, name, phone }) {
       borderColor='gray.200'
       backgroundColor='gray.100'
     >
-      <Box>{ time }</Box>
-      <Stack>
-        <Box textAlign='right'>{ name }</Box>
+      <Box fontSize='2xl'>{ time }</Box>
+      <Stack textAlign='right'>
+        <Box fontSize='xl' fontWeight='700'>{ name }</Box>
         <Box>{ phone }</Box>
       </Stack>
     </Flex>

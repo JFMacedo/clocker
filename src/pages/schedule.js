@@ -10,7 +10,7 @@ import { useAuth } from '../components/Auth'
 import { Logo } from '../components/Logo'
 import { FormatDate } from '../components/Date'
 import { getToken } from '../services/firebaseClient'
-import { ScheduleBlock } from '../components/Schedule'
+import { ScheduleBlock } from '../components/ScheduleBlock'
 
 const getSchedule = async (when) => {
   const token = await getToken()
